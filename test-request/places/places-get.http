@@ -15,7 +15,7 @@ GET http://0.0.0.0:3000/api/{{version}}/{{route}}/?page=1&limit=100 HTTP/1.1
 ###
 # @name get_all_places_filtered
 # @ref create_place_1
-GET http://0.0.0.0:3000/api/{{version}}/{{route}}/?category=LIBRARY HTTP/1.1
+GET http://0.0.0.0:3000/api/{{version}}/{{route}}/?category=WALUIGI&page=1&limit=2  HTTP/1.1
 
 ###
 # @name get_all_places_filtered_pagination

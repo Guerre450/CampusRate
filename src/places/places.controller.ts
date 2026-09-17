@@ -10,6 +10,7 @@ import {
   HttpCode,
   HttpStatus,
   ParseIntPipe,
+  ValidationPipe,
 } from '@nestjs/common';
 import { PlacesService } from './places.service';
 import { CreatePlaceDto } from './dto/create-place.dto';
@@ -54,7 +55,7 @@ export class PlacesController {
   })
   @Get()
   async findAll(
-    @Query('category') category?: string,
+    @Query('category', new ValidationPipe({})) category?: string,
     @Query('page', new ParseIntPipe()) page: number = 1,
     @Query('limit', new ParseIntPipe()) limit: number = 2,
   ) {
