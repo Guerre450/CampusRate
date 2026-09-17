@@ -53,6 +53,11 @@ export class PlacesService
   async findAll(category?: string, page: number = 1, limit: number = 1) {
     const filter: PropertyKey[] = [];
     if (category) {
+
+      if (!(["STUDY_SPACE", "LIBRARY", "FOOD_SERVICE", "SPORTS", "STUDENT_SERVICE", "COMPUTER_LAB", "OTHER"].includes(category))){
+        throw new BadRequestException(`Category ${category} not one of : "STUDY_SPACE", "LIBRARY", "FOOD_SERVICE", "SPORTS", "STUDENT_SERVICE", "COMPUTER_LAB", "OTHER"`);
+      }
+
       filter.push({
         propertyName: 'category',
         value: category,
