@@ -9,3 +9,12 @@
 # @name delete_rating
 # @ref create_rating
 DELETE http://0.0.0.0:3000/api/{{version}}/{{route}}/{{create_rating.id}} HTTP/1.1
+
+###
+# @name delete_place_invalid
+# @forceRef create_place
+# @forceRef create_rating
+DELETE http://0.0.0.0:3000/api/{{version}}/places/{{create_place.id}} HTTP/1.1
+
+
+

@@ -115,6 +115,5 @@ export class RatingsService {
         reviewCount: relatedRatingsCount,
         updatedAt: new Date()
       })
-      console.log(result)
   }
 }

@@ -20,3 +20,27 @@ Content-Type: application/json
     "rating" : 4,
     "comment" : "calm and has stable wi-fi"
 }
+
+###
+# @name create_rating_invalid
+# @ref create_place
+POST http://0.0.0.0:3000/api/{{version}}/{{route}} HTTP/1.1
+Content-Type: application/json
+{
+    "placeId" : "{{create_place.id}}",
+    "authorName" : "pooter",
+    "rating" : 6,
+    "comment" : "calm and has stable wi-fi"
+}
+
+###
+# @name create_rating_invalid_2
+# @ref create_place
+POST http://0.0.0.0:3000/api/{{version}}/{{route}} HTTP/1.1
+Content-Type: application/json
+{
+    "placeId" : "{{create_place.id}}",
+    "authorName" : "pooter",
+    "rating" : -1,
+    "comment" : "calm and has stable wi-fi"
+}
