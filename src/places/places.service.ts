@@ -4,45 +4,24 @@ import {
   Inject,
   Injectable,
   InternalServerErrorException,
-  OnApplicationBootstrap,
-  OnApplicationShutdown,
 } from '@nestjs/common';
-import { openJsonDataFile } from 'src/common/json/json-operations';
 import { PageDetailsDto } from 'src/common/page-details/page-details.dto';
-import {
-  JsonRepository,
-  PropertyKey,
-} from 'src/common/repository/json-repository';
+import { RatingsService } from 'src/ratings/ratings.service';
 import { CreatePlaceDto } from './dto/create-place.dto';
 import { UpdatePlaceDto } from './dto/update-place.dto';
 import { Place } from './entities/place.entity';
-import { RatingsService } from 'src/ratings/ratings.service';
-
+import { PropertyKey } from 'src/common/repository/repository-interface';
+import { PlaceRepository } from './repository/place.repository';
 @Injectable()
-export class PlacesService
-  implements OnApplicationBootstrap, OnApplicationShutdown
-{
+export class PlacesService {
   constructor(
     @Inject(forwardRef(() => RatingsService))
     private readonly ratingsService: RatingsService,
+    readonly placeRepo: PlaceRepository,
   ) {}
-  placeRepo: JsonRepository<Place>;
-  async onApplicationBootstrap() {
-    this.placeRepo = new JsonRepository<Place>(
-      await openJsonDataFile(
-        process.env.DATA_FILE_PATH ?? '/dammit/',
-        'place.json',
-      ),
-    );
-    await this.placeRepo.load();
-  }
-  // eslint-disable-next-line
-  async onApplicationShutdown(signal?: string) {
-    await this.placeRepo.close();
-  }
 
   async create(createPlaceDto: CreatePlaceDto) {
-    const result = await this.placeRepo.create(new Place(createPlaceDto));
+    const result = await this.placeRepo.create(createPlaceDto);
     if (!result.successful) {
       throw new BadRequestException("Couldn't create entity");
     }

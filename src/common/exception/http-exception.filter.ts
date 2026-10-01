@@ -1,9 +1,5 @@
 /* eslint-disable */
-import {
-    ExceptionFilter,
-    Catch,
-    ArgumentsHost
-} from '@nestjs/common';
+import { ExceptionFilter, Catch, ArgumentsHost } from '@nestjs/common';
 import { HttpException } from '@nestjs/common';
 import { ProblemDetailsDto } from './problem-details.dto';
 
@@ -20,7 +16,7 @@ export class HttpExceptionFilter implements ExceptionFilter {
       detail: exception.message,
       instance: request.url,
       status: status,
-      errors : [`${exception.cause}`]
+      errors: [`${exception.cause}`],
     };
     response.status(status).json(problemDetailsDto);
   }

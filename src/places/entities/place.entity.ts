@@ -1,26 +1,28 @@
 import { randomUUID } from 'crypto';
-import { CreatePlaceDto } from '../dto/create-place.dto';
+import { Prop, Schema } from '@nestjs/mongoose';
+
+@Schema({ timestamps: true })
 export class Place {
+  @Prop({ type: String, default: () => 'plc_' + randomUUID(), unique: true })
   id!: string;
+  @Prop({ required: true })
   name!: string;
+  @Prop({ required: true })
   description!: string;
+  @Prop({ required: true })
   category!: string;
+  @Prop({ required: true })
   address!: string;
-  services: string[] = [];
+  @Prop({ type: [String], default: () => [] })
+  services: string[];
+  @Prop({ default: () => 'ACTIVE' })
   status: string = 'ACTIVE';
-  averageRating: number = NaN;
+  @Prop({ type: Number, default: () => null })
+  averageRating: number;
+  @Prop({ default: () => 0 })
   reviewCount: number = 0;
+  @Prop({ default: () => new Date() })
   createdAt: Date;
+  @Prop({ default: () => new Date() })
   updatedAt: Date;
-  constructor(createPlaceDto: CreatePlaceDto) {
-    this.id = 'plc_' + randomUUID();
-    this.name = createPlaceDto.name;
-    this.description = createPlaceDto.description;
-    this.category = createPlaceDto.category;
-    this.address = createPlaceDto.address;
-    if (createPlaceDto.services) this.services = createPlaceDto.services;
-    if (createPlaceDto.status) this.status = createPlaceDto.status;
-    this.createdAt = new Date();
-    this.updatedAt = new Date();
-  }
 }
