@@ -1,6 +1,7 @@
 import {} from 'jest';
 import { JsonRepository } from './json-repository';
 import { FileHandle } from 'fs/promises';
+import {} from './repository-interface';
 type JsonRepoTest = {
   foo: number;
   pootisid: string;
