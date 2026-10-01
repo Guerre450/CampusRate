@@ -1,26 +1,12 @@
 /* eslint-disable */
 import { FileHandle } from 'fs/promises';
+import {
+  repoOperationResult,
+  PropertyKey,
+  Repository,
+  objectToPropertyKeyList,
+} from './repository-interface';
 
-type repoOperationResult<Type> = {
-  successful: boolean;
-  data?: Type;
-};
-
-export interface PropertyKey {
-  propertyName: string;
-  value: any;
-}
-
-export function objectToPropertyKeyList(object: object): PropertyKey[] {
-  const propertyKeyList: PropertyKey[] = [];
-  Object.keys(object).forEach((key) => {
-    propertyKeyList.push({
-      propertyName: key,
-      value: object[key],
-    });
-  });
-  return propertyKeyList;
-}
 export function doesObjectHasFields(
   data: object,
   properties: PropertyKey[],
@@ -44,7 +30,7 @@ export function doesObjectListHasFields(
   return true;
 }
 
-export class JsonRepository<Type extends object> {
+export class JsonRepository<Type extends object> implements Repository<Type> {
   private datas: Type[] = [];
   private fileHandler!: FileHandle;
 
@@ -55,20 +41,21 @@ export class JsonRepository<Type extends object> {
   private async write() {
     await this.fileHandler.truncate();
     await this.fileHandler.write(JSON.stringify(this.datas), 0);
-    await this.fileHandler.sync()
+    await this.fileHandler.sync();
   }
 
   async load() {
-    await this.fileHandler.sync()
+    await this.fileHandler.sync();
     await this.read();
   }
   private async read() {
     try {
-      const stats = (await this.fileHandler.stat())
-      let buffer = Buffer.alloc(stats.size) // Allocate a buffer to hold the data
-      buffer = (await this.fileHandler.read(buffer,0,buffer.length,0)).buffer
+      const stats = await this.fileHandler.stat();
+      let buffer = Buffer.alloc(stats.size); // Allocate a buffer to hold the data
+      buffer = (await this.fileHandler.read(buffer, 0, buffer.length, 0))
+        .buffer;
       const tempDatas: object[] = JSON.parse(buffer.toString());
-      
+
       if (
         !doesObjectListHasFields(
           tempDatas,
@@ -90,21 +77,19 @@ export class JsonRepository<Type extends object> {
     }
   }
 
-  length() : number
-  {
-    return this.datas.length
+  length(): number {
+    return this.datas.length;
   }
 
-
   async createFromList(entities: Type[]): Promise<repoOperationResult<Type[]>> {
-    await this.load()
+    await this.load();
     this.datas = this.datas.concat(entities);
     await this.write();
     return { successful: true, data: entities };
   }
 
   async create(entity: Type): Promise<repoOperationResult<Type>> {
-    await this.load()
+    await this.load();
     this.datas.push(entity);
     await this.write();
     return { successful: true, data: entity };
@@ -127,7 +112,7 @@ export class JsonRepository<Type extends object> {
   async findByProperties(
     properties: PropertyKey[],
   ): Promise<repoOperationResult<Type>> {
-    await this.load()
+    await this.load();
     const result = this.datas.find((data) => {
       return this.doesDataHasValue(data, properties);
     });
@@ -139,7 +124,7 @@ export class JsonRepository<Type extends object> {
   async listByProperties(
     properties: PropertyKey[] = [],
   ): Promise<repoOperationResult<Type[]>> {
-    await this.load()
+    await this.load();
     const result = this.datas.filter((data) => {
       return this.doesDataHasValue(data, properties);
     });
@@ -159,7 +144,7 @@ export class JsonRepository<Type extends object> {
     properties: PropertyKey[],
     updatedValues: Partial<Type>,
   ): Promise<repoOperationResult<Type>> {
-    await this.load()
+    await this.load();
     return await this.update(
       this.findIndexByProperties(properties),
       updatedValues,
@@ -173,30 +158,29 @@ export class JsonRepository<Type extends object> {
       return { successful: false };
     }
     Object.assign(this.datas[index], updatedValues);
-    await this.write()
+    await this.write();
     return { successful: true, data: this.datas[index] };
   }
   async deleteByProperties(
     properties: PropertyKey[],
   ): Promise<repoOperationResult<Type>> {
-    await this.load()
-    return await this.delete(this.findIndexByProperties(properties))
-  
+    await this.load();
+    return await this.delete(this.findIndexByProperties(properties));
   }
 
   private async delete(index: number): Promise<repoOperationResult<Type>> {
     if (index < 0) {
-      return {successful : false}
+      return { successful: false };
     }
     const results = this.datas.splice(index, 1);
-    if (results.length > 0){
+    if (results.length > 0) {
       await this.write();
       return {
-        successful : true,
-        data : results[0]
-      }
+        successful: true,
+        data: results[0],
+      };
     }
-    return {successful : false};
+    return { successful: false };
   }
 
   async close() {

@@ -17,7 +17,14 @@ Also, allows the students to rate these places.
 ### .env
 Copy the .env.example and name it .env, fill the following info:
 - PORT : number of the port to run the api on
-- DATA_FILE_PATH : where to create the json databases
+- MONGO_PORT : The port mongodb is running on. 
+- MONGO_DOMAIN : The domain of the mongodb
+- MONGO_USERNAME : The user of the mongodb instance
+- MONGO_PASSWORD : The password of the user of the mongodb instance
+- MONGO_DB : The name of the Database in the mongodb instance
+- MONGO_AUTHSOURCE : Source of the user's authentification database
+
+
 ### common:
 - everything that is accessible globally should be under src/common
 
