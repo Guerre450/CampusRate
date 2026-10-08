@@ -5,11 +5,11 @@ import { Prop, Schema } from '@nestjs/mongoose';
 export class Place {
   @Prop({ type: String, default: () => 'plc_' + randomUUID(), unique: true })
   id!: string;
-  @Prop({ required: true })
+  @Prop({ required: true, unique : true})
   name!: string;
   @Prop({ required: true })
   description!: string;
-  @Prop({ required: true })
+  @Prop({ required: true, index: true })
   category!: string;
   @Prop({ required: true })
   address!: string;
