@@ -5,9 +5,9 @@ import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 
 type ratingStats = {
-  count : number
-  average : number
-}
+  count: number;
+  average: number;
+};
 
 @Injectable()
 export class RatingRepository extends MongooseRepository<Rating> {
@@ -18,16 +18,22 @@ export class RatingRepository extends MongooseRepository<Rating> {
   }
   /**
    * using an aggragation here to optimize getting of count and average for a place
-   * @param placeId 
+   * @param placeId
    * @returns ratingStats
    */
-  async placeTotalRatingStats(placeId : string) : Promise<ratingStats>{
-    return await this.ratingModel.aggregate(
-      [
-        {$match : {placeId : placeId}},
-        {$group : {"_id" : null, "count" : {"$count" : {} }, "average" : {"$avg" : "$rating"}}}
-      ]
-    ).exec().then((result) => result[0] as ratingStats)
-
+  async placeTotalRatingStats(placeId: string): Promise<ratingStats> {
+    return await this.ratingModel
+      .aggregate([
+        { $match: { placeId: placeId } },
+        {
+          $group: {
+            _id: null,
+            count: { $count: {} },
+            average: { $avg: '$rating' },
+          },
+        },
+      ])
+      .exec()
+      .then((result) => result[0] as ratingStats);
   }
 }
