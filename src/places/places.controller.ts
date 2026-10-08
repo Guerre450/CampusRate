@@ -34,7 +34,6 @@ import { MongoExceptionFilter } from 'src/common/exception/mongo-exeception.filt
   description: 'invalid data',
   type: ProblemDetailsDto,
 })
-
 @Controller('places')
 export class PlacesController {
   constructor(private readonly placesService: PlacesService) {}
@@ -46,8 +45,8 @@ export class PlacesController {
     description: 'The created place',
   })
   @ApiConflictResponse({
-    description: "Conflicting name",
-    type : ProblemDetailsDto 
+    description: 'Conflicting name',
+    type: ProblemDetailsDto,
   })
   @UseFilters(MongoExceptionFilter)
   @Post()
