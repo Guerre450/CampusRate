@@ -11,6 +11,7 @@ import {
   HttpStatus,
   ParseIntPipe,
   ValidationPipe,
+  UseFilters,
 } from '@nestjs/common';
 import { PlacesService } from './places.service';
 import { CreatePlaceDto } from './dto/create-place.dto';
@@ -23,14 +24,17 @@ import {
   ApiOkResponse,
   ApiParam,
   ApiNoContentResponse,
+  ApiConflictResponse,
 } from '@nestjs/swagger';
 import { ProblemDetailsDto } from 'src/common/exception/problem-details.dto';
 import { PageDetailsDto } from 'src/common/page-details/page-details.dto';
+import { MongoExceptionFilter } from 'src/common/exception/mongo-exeception.filter';
 @ApiTags('Places')
 @ApiBadRequestResponse({
   description: 'invalid data',
   type: ProblemDetailsDto,
 })
+
 @Controller('places')
 export class PlacesController {
   constructor(private readonly placesService: PlacesService) {}
@@ -41,6 +45,11 @@ export class PlacesController {
   @ApiCreatedResponse({
     description: 'The created place',
   })
+  @ApiConflictResponse({
+    description: "Conflicting name",
+    type : ProblemDetailsDto 
+  })
+  @UseFilters(MongoExceptionFilter)
   @Post()
   async create(@Body() createPlaceDto: CreatePlaceDto) {
     return await this.placesService.create(createPlaceDto);

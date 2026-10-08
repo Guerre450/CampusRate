@@ -6,12 +6,9 @@ import {
   Injectable,
   InternalServerErrorException,
 } from '@nestjs/common';
+import { PlacesService } from 'src/places/places.service';
 import { CreateRatingDto } from './dto/create-rating.dto';
 import { UpdateRatingDto } from './dto/update-rating.dto';
-import { Rating } from './entities/rating.entity';
-import { openJsonDataFile } from 'src/common/json/json-operations';
-import { JsonRepository } from 'src/common/repository/json-repository';
-import { PlacesService } from 'src/places/places.service';
 import { RatingRepository } from './repository/rating.repository';
 
 @Injectable()
@@ -106,14 +103,7 @@ export class RatingsService {
   }
   // Bad Implementation, but i'm not complaining due to time restraints
   async updatePlaceRating(placeId: string) {
-    const relatedRatings = await this.findAll(placeId);
-    const relatedRatingsCount = relatedRatings.length;
-    const relatedRatingsAvg =
-      relatedRatings.reduce(
-        (prev: number, currentValue, currentIndex) =>
-          prev + currentValue.rating,
-        0,
-      ) / relatedRatingsCount;
+    const stats = await this.ratingRepo.placeTotalRatingStats(placeId)
     const result = await this.placesService.placeRepo.updateByProperties(
       [
         {
@@ -122,8 +112,8 @@ export class RatingsService {
         },
       ],
       {
-        averageRating: relatedRatingsAvg,
-        reviewCount: relatedRatingsCount,
+        averageRating: stats.average,
+        reviewCount: stats.count,
         updatedAt: new Date(),
       },
     );
