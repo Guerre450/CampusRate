@@ -4,6 +4,7 @@ import {
   VersioningType,
 } from '@nestjs/common';
 import { HttpExceptionFilter } from 'src/common/exception/http-exception.filter';
+import { MethodLoggingInterceptor } from 'src/common/interceptors/method-logging.interceptor';
 import { PostInterceptor } from 'src/common/interceptors/post.interceptor';
 
 export function configureApp(app: INestApplication): void {
@@ -19,6 +20,9 @@ export function configureApp(app: INestApplication): void {
       forbidNonWhitelisted: true,
     }),
   );
-  app.useGlobalInterceptors(new PostInterceptor());
+  app.useGlobalInterceptors(
+    new PostInterceptor(),
+    new MethodLoggingInterceptor(),
+  );
   app.useGlobalFilters(new HttpExceptionFilter());
 }
