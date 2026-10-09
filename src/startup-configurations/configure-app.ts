@@ -20,6 +20,9 @@ export function configureApp(app: INestApplication): void {
       forbidNonWhitelisted: true,
     }),
   );
-  app.useGlobalInterceptors(new PostInterceptor(), new MethodLoggingInterceptor());
+  app.useGlobalInterceptors(
+    new PostInterceptor(),
+    new MethodLoggingInterceptor(),
+  );
   app.useGlobalFilters(new HttpExceptionFilter());
 }
