@@ -6,6 +6,12 @@
 POST http://0.0.0.0:3000/api/{{version}}/{{route}} HTTP/1.1
 Content-Type: application/json
 < ./request-content/one-place.json
+
+###
+# @name create_place_too_lengthy
+POST http://0.0.0.0:3000/api/{{version}}/{{route}} HTTP/1.1
+Content-Type: application/json
+< ./request-content/one-place-overLength.json
 ###
 # @name create_place_1
 POST http://0.0.0.0:3000/api/{{version}}/{{route}} HTTP/1.1

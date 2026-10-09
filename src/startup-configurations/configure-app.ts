@@ -1,5 +1,7 @@
 import {
+  BadRequestException,
   INestApplication,
+  ValidationError,
   ValidationPipe,
   VersioningType,
 } from '@nestjs/common';
@@ -18,6 +20,11 @@ export function configureApp(app: INestApplication): void {
       transform: true,
       whitelist: true,
       forbidNonWhitelisted: true,
+      exceptionFactory: (validationErrors: ValidationError[]) => {
+        let message = "\n";
+        validationErrors.forEach((error) => message += `[${error.property}]: ` + Object.values(error.constraints ?? {}).join(",") + "\n") 
+        return new BadRequestException(message,{})
+      },
     }),
   );
   app.useGlobalInterceptors(
