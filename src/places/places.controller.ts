@@ -9,8 +9,6 @@ import {
   Query,
   HttpCode,
   HttpStatus,
-  ParseIntPipe,
-  ValidationPipe,
   UseFilters,
 } from '@nestjs/common';
 import { PlacesService } from './places.service';
@@ -29,6 +27,7 @@ import {
 import { ProblemDetailsDto } from 'src/common/exception/problem-details.dto';
 import { PageDetailsDto } from 'src/common/page-details/page-details.dto';
 import { MongoExceptionFilter } from 'src/common/exception/mongo-exeception.filter';
+import { QueryPlaceDto } from './dto/query-place.dto';
 @ApiTags('Places')
 @ApiBadRequestResponse({
   description: 'invalid data',
@@ -62,12 +61,12 @@ export class PlacesController {
     type: PageDetailsDto,
   })
   @Get()
-  async findAll(
-    @Query('category', new ValidationPipe({})) category?: string,
-    @Query('page', new ParseIntPipe()) page: number = 1,
-    @Query('limit', new ParseIntPipe()) limit: number = 2,
-  ) {
-    return await this.placesService.findAll(category, page, limit);
+  async findAll(@Query() queryPlaceDto: QueryPlaceDto) {
+    return await this.placesService.findAll(
+      queryPlaceDto.category,
+      queryPlaceDto.page,
+      queryPlaceDto.limit,
+    );
   }
   @ApiOperation({
     summary: 'Find place by id',

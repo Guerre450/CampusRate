@@ -18,6 +18,21 @@ GET http://0.0.0.0:3000/api/{{version}}/{{route}}/?page=1&limit=100 HTTP/1.1
 GET http://0.0.0.0:3000/api/{{version}}/{{route}}/?category=WALUIGI&page=1&limit=2  HTTP/1.1
 
 ###
+# @name get_all_places_limit_too_high
+# @ref create_place_1
+GET http://0.0.0.0:3000/api/{{version}}/{{route}}/?category=STUDY_SPACE&page=1&limit=101  HTTP/1.1
+
+###
+# @name get_all_places_limit_too_low
+# @ref create_place_1
+GET http://0.0.0.0:3000/api/{{version}}/{{route}}/?category=STUDY_SPACE&page=1&limit=0  HTTP/1.1
+
+###
+# @name get_all_places_page_too_low
+# @ref create_place_1
+GET http://0.0.0.0:3000/api/{{version}}/{{route}}/?category=STUDY_SPACE&page=0&limit=1  HTTP/1.1
+
+###
 # @name get_all_places_filtered_pagination
 # need to create multiple create_place  
 GET http://0.0.0.0:3000/api/{{version}}/{{route}}/?category=STUDY_SPACE&page=1&limit=2 HTTP/1.1
