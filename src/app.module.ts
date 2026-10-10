@@ -5,6 +5,7 @@ import { RatingsModule } from './ratings/ratings.module';
 import * as Joi from 'joi';
 import databaseConfig from './config/database.config';
 import { MongooseModule } from '@nestjs/mongoose';
+import { ThrottlerModule } from '@nestjs/throttler';
 
 @Module({
   imports: [
@@ -31,6 +32,12 @@ import { MongooseModule } from '@nestjs/mongoose';
         autoIndex: process.env.NODE_ENV !== 'production', // Deactivate auto-indexing in prod for performance
       }),
     }),
+    ThrottlerModule.forRoot([
+      {
+        ttl: 60_000,
+        limit: 100,
+      },
+    ]),
     PlacesModule,
     RatingsModule,
   ],
