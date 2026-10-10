@@ -9,7 +9,6 @@ import {
   Query,
   HttpCode,
   HttpStatus,
-  UseFilters,
 } from '@nestjs/common';
 import { PlacesService } from './places.service';
 import { CreatePlaceDto } from './dto/create-place.dto';
@@ -26,7 +25,6 @@ import {
 } from '@nestjs/swagger';
 import { ProblemDetailsDto } from 'src/common/exception/problem-details.dto';
 import { PageDetailsDto } from 'src/common/page-details/page-details.dto';
-import { MongoExceptionFilter } from 'src/common/exception/mongo-exeception.filter';
 import { QueryPlaceDto } from './dto/query-place.dto';
 @ApiTags('Places')
 @ApiBadRequestResponse({
@@ -47,7 +45,6 @@ export class PlacesController {
     description: 'Conflicting name',
     type: ProblemDetailsDto,
   })
-  @UseFilters(MongoExceptionFilter)
   @Post()
   async create(@Body() createPlaceDto: CreatePlaceDto) {
     return await this.placesService.create(createPlaceDto);

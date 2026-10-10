@@ -6,9 +6,9 @@ import {
   VersioningType,
 } from '@nestjs/common';
 import { HttpExceptionFilter } from 'src/common/exception/http-exception.filter';
+import { MongoExceptionFilter } from 'src/common/exception/mongo-exeception.filter';
 import { MethodLoggingInterceptor } from 'src/common/interceptors/method-logging.interceptor';
 import { PostInterceptor } from 'src/common/interceptors/post.interceptor';
-
 export function configureApp(app: INestApplication): void {
   app.setGlobalPrefix('api');
   app.enableVersioning({
@@ -37,5 +37,5 @@ export function configureApp(app: INestApplication): void {
     new PostInterceptor(),
     new MethodLoggingInterceptor(),
   );
-  app.useGlobalFilters(new HttpExceptionFilter());
+  app.useGlobalFilters(new HttpExceptionFilter(), new MongoExceptionFilter());
 }

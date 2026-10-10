@@ -11,8 +11,8 @@ export class HttpExceptionFilter implements ExceptionFilter {
     const response = ctx.getResponse();
     const request = ctx.getRequest();
     const status = exception.getStatus();
-    this.logger.error(`
-      ${new Date().toISOString()} : ERROR
+    this.logger.warn(`
+      ${new Date().toISOString()} : WARN
       - ${request.url} - ${request.method}
       - ${status}
       - ${exception.name}
