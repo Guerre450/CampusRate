@@ -9,8 +9,6 @@ import {
   Query,
   HttpCode,
   HttpStatus,
-  ParseIntPipe,
-  ValidationPipe,
   UseFilters,
 } from '@nestjs/common';
 import { PlacesService } from './places.service';
@@ -56,16 +54,19 @@ export class PlacesController {
   }
   @ApiOperation({
     summary: 'A list of places',
-    description: 'Returns all the places filtered and in page format'
+    description: 'Returns all the places filtered and in page format',
   })
   @ApiOkResponse({
     description: 'List of places in page format',
     type: PageDetailsDto,
   })
   @Get()
-  async findAll(@Query() queryPlaceDto : QueryPlaceDto
-  ) {
-    return await this.placesService.findAll(queryPlaceDto.category, queryPlaceDto.page, queryPlaceDto.limit);
+  async findAll(@Query() queryPlaceDto: QueryPlaceDto) {
+    return await this.placesService.findAll(
+      queryPlaceDto.category,
+      queryPlaceDto.page,
+      queryPlaceDto.limit,
+    );
   }
   @ApiOperation({
     summary: 'Find place by id',
