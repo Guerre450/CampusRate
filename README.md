@@ -41,6 +41,14 @@ Copy the .env.example and name it .env, fill the following info:
 ```bash
 $ npm install
 ```
+## Run test database
+
+```bash
+$ docker compose up -d
+```
+requires docker engine
+
+
 
 ## Compile and run the project
 
@@ -68,6 +76,8 @@ $ npm run test:e2e
 $ npm run test:cov
 ```
 
+## Run .http tests
+install vscode add-on: https://marketplace.visualstudio.com/items?itemName=anweber.vscode-httpyac
 
 ## Run linting
 ### Lint and autofix with eslint
@@ -75,3 +85,10 @@ $ npm run lint
 
 ### Format with prettier
 $ npm run format
+
+
+## optional integration(for semester grading)
+- M1, M2, M3
+- H1, H2, H3, H4, H5
+- P1, P2, P3
+- L1, L2

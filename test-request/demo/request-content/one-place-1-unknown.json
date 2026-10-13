@@ -1,0 +1,9 @@
+{
+    "name" : "blibliotheque municipal",
+    "description" : "Espace calme avec prises",
+    "category" : "LIBRARY",
+    "banane" : "chaude",
+    "address" : "Pavillon A local A-210",
+    "services" : ["POWER_OUTLETS"],
+    "status" : "ACTIVE"
+}
