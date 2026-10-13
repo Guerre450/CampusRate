@@ -1,0 +1,7 @@
+{
+    "description" : "Espace calme avec prises",
+    "category" : "LIBRARY",
+    "address" : "Pavillon A local A-210",
+    "services" : ["POWER_OUTLETS"],
+    "status" : "ACTIVE"
+}
