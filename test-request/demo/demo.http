@@ -1,0 +1,45 @@
+#
+@route = places
+@version = v1
+###
+# @name create_place
+POST http://0.0.0.0:3000/api/{{version}}/{{route}} HTTP/1.1
+Content-Type: application/json
+< ./request-content/one-place.json
+
+### @name get_id_places
+# @ref create_place
+GET http://0.0.0.0:3000/api/{{version}}/{{route}}/{{create_place.id}} HTTP/1.1
+
+###
+# @name create_place_missing
+POST http://0.0.0.0:3000/api/{{version}}/{{route}} HTTP/1.1
+Content-Type: application/json
+< ./request-content/one-place-1-missing.json
+
+###
+# @name create_place_control_invalid
+POST http://0.0.0.0:3000/api/{{version}}/{{route}} HTTP/1.1
+Content-Type: application/json
+< ./request-content/one-place-1-control-invalid.json
+
+
+###
+# @name create_place_unknown_property
+POST http://0.0.0.0:3000/api/{{version}}/{{route}} HTTP/1.1
+Content-Type: application/json
+< ./request-content/one-place-1-unknown.json
+
+### 
+# @name update_place
+# @ref create_place
+PATCH http://0.0.0.0:3000/api/{{version}}/{{route}}/{{create_place.id}} HTTP/1.1
+Content-Type: application/json
+< ./request-content/one-place-updated.json
+
+### 
+# @name update_place_invalid
+# @ref create_place
+PATCH http://0.0.0.0:3000/api/{{version}}/{{route}}/{{create_place.id}} HTTP/1.1
+Content-Type: application/json
+< ./request-content/one-place-updated-invalid.json

@@ -1,0 +1,8 @@
+{
+    "name" : "blibliotheque principale",
+    "description" : "Espace calme avec prises",
+    "category" : "STUDY_SPACE",
+    "address" : "Pavillon A local A-210",
+    "services" : ["WIFI", "POWER_OUTLETS"],
+    "status" : "ACTIVE"
+}
